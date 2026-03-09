@@ -260,7 +260,7 @@ footer{background:var(--dark);padding:32px 64px;display:flex;justify-content:spa
       </div>
     </div>
     <div class="contact-strip">
-      <a href="/cdn-cgi/l/email-protection#096568627a6164606b606a666e496e64686065276a6664" class="contact-item"><span class="ci-icon">✉</span><span class="__cf_email__" data-cfemail="3a565b5149525753585359555d7a5d575b535614595557">[email&#160;protected]</span></a>
+      <a href="mailto:lakshmibicog@gmail.com" class="contact-item"><span class="ci-icon">✉</span>lakshmibicog@gmail.com</a>
       <a href="tel:4702226161" class="contact-item"><span class="ci-icon">☎</span>(470) 222-6161</a>
       <span class="contact-item"><span class="ci-icon">📍</span>Charlotte, NC, USA</span>
     </div>
@@ -460,29 +460,29 @@ footer{background:var(--dark);padding:32px 64px;display:flex;justify-content:spa
     <div class="chart-panel">
       <div class="cp-label">SaaS Metrics</div>
       <div class="cp-title">Monthly Recurring Revenue Trend</div>
-      <div class="ch-lg"><canvas id="mrrChart"></canvas></div>
+      <div class="ch-lg" id="mrrChart"></div>
     </div>
     <div class="chart-panel">
       <div class="cp-label">Revenue Mix</div>
       <div class="cp-title">ARR by Segment</div>
-      <div class="ch-lg"><canvas id="segChart"></canvas></div>
+      <div class="ch-lg" id="segChart"></div>
     </div>
   </div>
   <div class="chart-row2">
     <div class="chart-panel">
       <div class="cp-label">GTM Analytics</div>
       <div class="cp-title">Pipeline by Stage</div>
-      <div class="ch"><canvas id="pipeChart"></canvas></div>
+      <div class="ch" id="pipeChart"></div>
     </div>
     <div class="chart-panel">
       <div class="cp-label">Product Usage</div>
       <div class="cp-title">Feature Adoption</div>
-      <div class="ch"><canvas id="adoptChart"></canvas></div>
+      <div class="ch" id="adoptChart"></div>
     </div>
     <div class="chart-panel">
       <div class="cp-label">Finance</div>
       <div class="cp-title">Budget vs Actuals</div>
-      <div class="ch"><canvas id="budgetChart"></canvas></div>
+      <div class="ch" id="budgetChart"></div>
     </div>
   </div>
   <div class="data-table">
@@ -590,7 +590,7 @@ footer{background:var(--dark);padding:32px 64px;display:flex;justify-content:spa
       <h2 class="section-title" style="margin-bottom:16px;">Let's <em>Connect</em></h2>
       <p class="contact-tagline">Open to Lead / Senior Data Analyst roles, BI leadership opportunities, and complex analytics challenges across any industry.</p>
       <div class="contact-cards">
-        <a href="/cdn-cgi/l/email-protection#1e727f756d7673777c777d71795e79737f7772307d7173" class="cc"><div class="cc-icon">✉</div><div><div class="cc-label">Email</div><div class="cc-value"><span class="__cf_email__" data-cfemail="dbb7bab0a8b3b6b2b9b2b8b4bc9bbcb6bab2b7f5b8b4b6">[email&#160;protected]</span></div></div></a>
+        <a href="mailto:lakshmibicog@gmail.com" class="cc"><div class="cc-icon">✉</div><div><div class="cc-label">Email</div><div class="cc-value">lakshmibicog@gmail.com</div></div></a>
         <a href="tel:4702226161" class="cc"><div class="cc-icon">☎</div><div><div class="cc-label">Phone</div><div class="cc-value">(470) 222-6161</div></div></a>
         <a href="https://www.linkedin.com/in/lakshmi-surya" target="_blank" class="cc"><div class="cc-icon">in</div><div><div class="cc-label">LinkedIn</div><div class="cc-value">linkedin.com/in/lakshmi-surya</div></div></a>
         <a href="https://github.com/lakshmisrisurya" target="_blank" class="cc"><div class="cc-icon">⌥</div><div><div class="cc-label">GitHub</div><div class="cc-value">github.com/lakshmisrisurya</div></div></a>
@@ -600,7 +600,7 @@ footer{background:var(--dark);padding:32px 64px;display:flex;justify-content:spa
     <div style="padding-top:16px">
       <div class="avail"><div class="avail-dot"></div>Available for new opportunities</div>
       <div class="resume-cta">12+ years turning data into <em>impact.</em><br>Let's build something great together.</div>
-      <a href="/cdn-cgi/l/email-protection#503c313b23383d393239333f3710373d31393c7e333f3d" class="btn-dark">Send a Message →</a>
+      <a href="mailto:lakshmibicog@gmail.com" class="btn-dark">Send a Message →</a>
     </div>
   </div>
 </section>
@@ -610,7 +610,7 @@ footer{background:var(--dark);padding:32px 64px;display:flex;justify-content:spa
   <div class="footer-note">Lead Data Analyst · Charlotte, NC · © 2024</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 function showExp(id, tab) {
   document.querySelectorAll('.exp-content').forEach(e => e.classList.remove('active'));
   document.querySelectorAll('.exp-tab').forEach(t => t.classList.remove('active'));
@@ -618,163 +618,226 @@ function showExp(id, tab) {
   tab.classList.add('active');
 }
 
-// Pure canvas charts - no external library
+// SVG Charts - zero dependencies
 const R='#c84b2f',G='#1a6b5c',GO='#c4a04a',IN='#6366f1';
 
-function resizeCanvas(id){
-  const c=document.getElementById(id);
-  const p=c.parentElement;
-  c.width=p.clientWidth||500;
-  c.height=p.clientHeight||240;
-  return c.getContext('2d');
+function svg(tag,attrs,children){
+  const ns='http://www.w3.org/2000/svg';
+  const el=document.createElementNS(ns,tag);
+  Object.entries(attrs||{}).forEach(([k,v])=>el.setAttribute(k,v));
+  (children||[]).forEach(c=>typeof c==='string'?el.appendChild(document.createTextNode(c)):el.appendChild(c));
+  return el;
+}
+function mkSVG(id,w,h){
+  const el=document.getElementById(id);
+  el.innerHTML='';
+  const s=svg('svg',{viewBox:`0 0 ${w} ${h}`,width:'100%',height:'100%',preserveAspectRatio:'xMidYMid meet'});
+  el.appendChild(s);
+  return s;
 }
 
+// ── MRR LINE CHART ──
 function drawMRR(){
-  const ctx=resizeCanvas('mrrChart');
-  const W=ctx.canvas.width,H=ctx.canvas.height;
-  const pl=62,pr=52,pt=20,pb=36;
+  const W=560,H=280,pl=58,pr=48,pt=16,pb=32;
+  const s=mkSVG('mrrChart',W,H);
   const mrr=[1680,1790,1940,1870,2060,2280,2190,2450,2370,2640,2890,2680];
   const nrr=[108,109,112,111,114,116,113,117,115,118,121,119];
   const labs=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const cW=W-pl-pr,cH=H-pt-pb;
   const mMn=1600,mMx=3000,nMn=105,nMx=125;
-  ctx.clearRect(0,0,W,H);
-  for(let i=0;i<=4;i++){const y=pt+cH*(i/4);ctx.beginPath();ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=1;ctx.moveTo(pl,y);ctx.lineTo(pl+cW,y);ctx.stroke();}
-  // MRR fill
-  const g=ctx.createLinearGradient(0,pt,0,pt+cH);
-  g.addColorStop(0,'rgba(200,75,47,0.2)');g.addColorStop(1,'rgba(200,75,47,0)');
-  ctx.beginPath();
-  mrr.forEach((v,i)=>{const x=pl+cW*(i/(mrr.length-1));const y=pt+cH*(1-(v-mMn)/(mMx-mMn));i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-  ctx.lineTo(pl+cW,pt+cH);ctx.lineTo(pl,pt+cH);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  // defs gradient
+  const defs=svg('defs');
+  const lg=svg('linearGradient',{id:'mrrGrad',x1:'0',y1:'0',x2:'0',y2:'1'});
+  lg.appendChild(svg('stop',{'offset':'0%','stop-color':'rgba(200,75,47,0.25)'}));
+  lg.appendChild(svg('stop',{'offset':'100%','stop-color':'rgba(200,75,47,0)'}));
+  defs.appendChild(lg); s.appendChild(defs);
+  // grid
+  for(let i=0;i<=4;i++){
+    const y=pt+cH*(i/4);
+    s.appendChild(svg('line',{x1:pl,y1:y,x2:pl+cW,y2:y,stroke:'rgba(0,0,0,0.06)',
+      'stroke-width':'1'}));
+    const v=Math.round(mMn+(mMx-mMn)*((4-i)/4));
+    const t=svg('text',{x:pl-5,y:y+4,'text-anchor':'end',fill:'#999',
+      'font-size':'10','font-family':'IBM Plex Mono,monospace'},[`$${v}K`]);
+    s.appendChild(t);
+  }
+  // NRR right axis
+  for(let i=0;i<=4;i++){
+    const y=pt+cH*(i/4);
+    const v=Math.round(nMn+(nMx-nMn)*((4-i)/4));
+    s.appendChild(svg('text',{x:pl+cW+5,y:y+4,'text-anchor':'start',fill:'#999',
+      'font-size':'10','font-family':'IBM Plex Mono,monospace'},[`${v}%`]));
+  }
+  // x labels
+  labs.forEach((l,i)=>{
+    const x=pl+cW*(i/(labs.length-1));
+    s.appendChild(svg('text',{x,y:H-4,'text-anchor':'middle',fill:'#999',
+      'font-size':'10','font-family':'IBM Plex Mono,monospace'},[l]));
+  });
+  // MRR area fill
+  let areaD='';
+  mrr.forEach((v,i)=>{const x=pl+cW*(i/(mrr.length-1));const y=pt+cH*(1-(v-mMn)/(mMx-mMn));areaD+=(i===0?`M${x},${y}`:`L${x},${y}`);});
+  areaD+=`L${pl+cW},${pt+cH}L${pl},${pt+cH}Z`;
+  s.appendChild(svg('path',{d:areaD,fill:'url(#mrrGrad)',stroke:'none'}));
   // MRR line
-  ctx.beginPath();ctx.strokeStyle=R;ctx.lineWidth=2.5;
-  mrr.forEach((v,i)=>{const x=pl+cW*(i/(mrr.length-1));const y=pt+cH*(1-(v-mMn)/(mMx-mMn));i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-  ctx.stroke();
-  mrr.forEach((v,i)=>{const x=pl+cW*(i/(mrr.length-1));const y=pt+cH*(1-(v-mMn)/(mMx-mMn));ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fillStyle=R;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();});
+  let lineD='';
+  mrr.forEach((v,i)=>{const x=pl+cW*(i/(mrr.length-1));const y=pt+cH*(1-(v-mMn)/(mMx-mMn));lineD+=(i===0?`M${x},${y}`:`L${x},${y}`);});
+  s.appendChild(svg('path',{d:lineD,fill:'none',stroke:R,'stroke-width':'2.5','stroke-linejoin':'round'}));
+  mrr.forEach((v,i)=>{
+    const x=pl+cW*(i/(mrr.length-1));const y=pt+cH*(1-(v-mMn)/(mMx-mMn));
+    s.appendChild(svg('circle',{cx:x,cy:y,r:'4',fill:R,stroke:'#fff','stroke-width':'1.5'}));
+  });
   // NRR line
-  ctx.beginPath();ctx.strokeStyle=G;ctx.lineWidth=2.5;
-  nrr.forEach((v,i)=>{const x=pl+cW*(i/(nrr.length-1));const y=pt+cH*(1-(v-nMn)/(nMx-nMn));i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-  ctx.stroke();
-  nrr.forEach((v,i)=>{const x=pl+cW*(i/(nrr.length-1));const y=pt+cH*(1-(v-nMn)/(nMx-nMn));ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fillStyle=G;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();});
-  ctx.fillStyle='#999';ctx.font='10px IBM Plex Mono,monospace';ctx.textAlign='center';
-  labs.forEach((l,i)=>{ctx.fillText(l,pl+cW*(i/(labs.length-1)),H-6);});
-  ctx.textAlign='right';
-  for(let i=0;i<=4;i++){ctx.fillStyle='#999';ctx.fillText('$'+(Math.round(mMn+(mMx-mMn)*(i/4)/100)*100)+'K',pl-4,pt+cH*(1-i/4)+4);}
-  ctx.textAlign='left';
-  for(let i=0;i<=4;i++){ctx.fillStyle='#999';ctx.fillText(Math.round(nMn+(nMx-nMn)*(i/4))+'%',W-pr+4,pt+cH*(1-i/4)+4);}
-  ctx.fillStyle=R;ctx.fillRect(pl,H-10,16,3);ctx.fillStyle='#555';ctx.font='10px IBM Plex Mono,monospace';ctx.textAlign='left';ctx.fillText('MRR ($K)',pl+20,H-5);
-  ctx.fillStyle=G;ctx.fillRect(pl+95,H-10,16,3);ctx.fillStyle='#555';ctx.fillText('NRR (%)',pl+115,H-5);
+  let nrrD='';
+  nrr.forEach((v,i)=>{const x=pl+cW*(i/(nrr.length-1));const y=pt+cH*(1-(v-nMn)/(nMx-nMn));nrrD+=(i===0?`M${x},${y}`:`L${x},${y}`);});
+  s.appendChild(svg('path',{d:nrrD,fill:'none',stroke:G,'stroke-width':'2.5','stroke-linejoin':'round'}));
+  nrr.forEach((v,i)=>{
+    const x=pl+cW*(i/(nrr.length-1));const y=pt+cH*(1-(v-nMn)/(nMx-nMn));
+    s.appendChild(svg('circle',{cx:x,cy:y,r:'4',fill:G,stroke:'#fff','stroke-width':'1.5'}));
+  });
+  // legend
+  s.appendChild(svg('rect',{x:pl,y:H-13,width:16,height:3,fill:R}));
+  s.appendChild(svg('text',{x:pl+20,y:H-8,fill:'#555','font-size':'10','font-family':'IBM Plex Mono,monospace'},['MRR ($K)']));
+  s.appendChild(svg('rect',{x:pl+95,y:H-13,width:16,height:3,fill:G}));
+  s.appendChild(svg('text',{x:pl+115,y:H-8,fill:'#555','font-size':'10','font-family':'IBM Plex Mono,monospace'},['NRR (%)']));
 }
 
+// ── DONUT ──
 function drawDonut(){
-  const ctx=resizeCanvas('segChart');
-  const W=ctx.canvas.width,H=ctx.canvas.height;
-  const cx=W/2,cy=(H-50)/2+10,r=Math.min(W,H-50)*0.33,ri=r*0.62;
+  const W=340,H=300,cx=170,cy=125,r=100,ri=64;
+  const s=mkSVG('segChart',W,H);
   const data=[42,31,19,8],cols=[R,G,GO,IN],labs=['Enterprise','Mid-Market','SMB','New Logo'];
   const total=data.reduce((a,b)=>a+b,0);
-  ctx.clearRect(0,0,W,H);
   let start=-Math.PI/2;
   data.forEach((v,i)=>{
     const slice=(v/total)*Math.PI*2;
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+slice);ctx.closePath();ctx.fillStyle=cols[i];ctx.fill();
+    const x1=cx+Math.cos(start)*r,y1=cy+Math.sin(start)*r;
+    const x2=cx+Math.cos(start+slice)*r,y2=cy+Math.sin(start+slice)*r;
+    const xi1=cx+Math.cos(start)*ri,yi1=cy+Math.sin(start)*ri;
+    const xi2=cx+Math.cos(start+slice)*ri,yi2=cy+Math.sin(start+slice)*ri;
+    const lg=slice>Math.PI?1:0;
+    const d=`M${xi1},${yi1}L${x1},${y1}A${r},${r},0,${lg},1,${x2},${y2}L${xi2},${yi2}A${ri},${ri},0,${lg},0,${xi1},${yi1}Z`;
+    s.appendChild(svg('path',{d,fill:cols[i],stroke:'#fff','stroke-width':'2'}));
     start+=slice;
   });
-  ctx.beginPath();ctx.arc(cx,cy,ri,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
-  ctx.fillStyle='#2a2a35';ctx.font='bold 14px Cormorant Garamond,serif';ctx.textAlign='center';ctx.fillText('ARR Mix',cx,cy+5);
+  s.appendChild(svg('text',{x:cx,y:cy+5,'text-anchor':'middle',fill:'#2a2a35',
+    'font-size':'14','font-family':'Cormorant Garamond,serif','font-weight':'600'},['ARR Mix']));
   // legend
-  const lStart=W/2-(labs.length*88)/2;
   labs.forEach((l,i)=>{
-    const lx=lStart+i*88;
-    ctx.beginPath();ctx.arc(lx+5,H-18,5,0,Math.PI*2);ctx.fillStyle=cols[i];ctx.fill();
-    ctx.fillStyle='#777';ctx.font='10px IBM Plex Mono,monospace';ctx.textAlign='left';ctx.fillText(l,lx+13,H-14);
+    const lx=10+(i%2)*160,ly=255+(Math.floor(i/2)*22);
+    s.appendChild(svg('circle',{cx:lx+6,cy:ly-4,r:'5',fill:cols[i]}));
+    s.appendChild(svg('text',{x:lx+15,y:ly,fill:'#777','font-size':'10',
+      'font-family':'IBM Plex Mono,monospace'},[l]));
   });
 }
 
+// ── PIPELINE HORIZONTAL BAR ──
 function drawPipeline(){
-  const ctx=resizeCanvas('pipeChart');
-  const W=ctx.canvas.width,H=ctx.canvas.height;
+  const W=420,H=240,pl=92,pr=12,pt=8,pb=24;
+  const s=mkSVG('pipeChart',W,H);
   const labs=['Prospecting','Discovery','Demo','Proposal','Negotiation','Won'];
   const data=[4200,3100,2400,1800,980,620];
-  const cols=['rgba(200,75,47,.8)','rgba(200,75,47,.68)','rgba(200,75,47,.56)','rgba(200,75,47,.44)','rgba(200,75,47,.32)','rgba(26,107,92,.85)'];
-  const pl=90,pr=16,pt=8,pb=28;
+  const cols=[R+'cc',R+'aa',R+'88',R+'66',R+'44',G+'cc'];
   const cW=W-pl-pr,cH=H-pt-pb,mx=4500;
-  const bH=Math.floor(cH/labs.length*0.55);
-  ctx.clearRect(0,0,W,H);
+  const bH=Math.floor(cH/labs.length*0.54);
+  // grid lines
   [0,1500,3000,4500].forEach(v=>{
     const x=pl+cW*(v/mx);
-    ctx.beginPath();ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=1;ctx.moveTo(x,pt);ctx.lineTo(x,pt+cH);ctx.stroke();
-    ctx.fillStyle='#aaa';ctx.font='9px IBM Plex Mono,monospace';ctx.textAlign='center';
-    ctx.fillText(v===0?'0':'$'+(v/1000)+'K',x,H-4);
+    s.appendChild(svg('line',{x1:x,y1:pt,x2:x,y2:pt+cH,stroke:'rgba(0,0,0,0.05)','stroke-width':'1'}));
+    s.appendChild(svg('text',{x,y:H-4,'text-anchor':'middle',fill:'#aaa',
+      'font-size':'9','font-family':'IBM Plex Mono,monospace'},[v===0?'0':'$'+(v/1000)+'K']));
   });
   labs.forEach((l,i)=>{
     const gap=cH/labs.length;
     const y=pt+gap*i+(gap-bH)/2;
     const bw=cW*(data[i]/mx);
-    ctx.fillStyle=cols[i];ctx.beginPath();ctx.roundRect(pl,y,bw,bH,3);ctx.fill();
-    ctx.fillStyle='#444';ctx.font='10px IBM Plex Mono,monospace';ctx.textAlign='right';ctx.fillText(l,pl-5,y+bH/2+4);
+    s.appendChild(svg('rect',{x:pl,y,width:Math.max(bw,2),height:bH,fill:cols[i],rx:'3'}));
+    s.appendChild(svg('text',{x:pl-5,y:y+bH/2+4,'text-anchor':'end',fill:'#444',
+      'font-size':'10','font-family':'IBM Plex Mono,monospace'},[l]));
+    if(bw>35){
+      s.appendChild(svg('text',{x:pl+bw-5,y:y+bH/2+4,'text-anchor':'end',fill:'#fff',
+        'font-size':'9','font-family':'IBM Plex Mono,monospace'},['$'+(data[i]/1000).toFixed(1)+'K']));
+    }
   });
 }
 
+// ── RADAR ──
 function drawRadar(){
-  const ctx=resizeCanvas('adoptChart');
-  const W=ctx.canvas.width,H=ctx.canvas.height;
-  const cx=W/2,cy=H/2-8,r=Math.min(W,H)*0.3;
+  const W=340,H=260,cx=170,cy=115,r=88;
+  const s=mkSVG('adoptChart',W,H);
   const labs=['Reporting','Invoicing','Payroll','Scheduling','Inventory','Analytics'];
   const ent=[92,88,76,82,79,85],mid=[78,71,60,68,64,72];
   const n=labs.length;
-  ctx.clearRect(0,0,W,H);
-  [0.3,0.55,0.8,1].forEach(s=>{
-    ctx.beginPath();ctx.strokeStyle='rgba(0,0,0,0.08)';ctx.lineWidth=1;
-    labs.forEach((_,i)=>{const a=-Math.PI/2+(i/n)*Math.PI*2;const x=cx+Math.cos(a)*r*s;const y=cy+Math.sin(a)*r*s;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.closePath();ctx.stroke();
+  // rings
+  [0.3,0.55,0.8,1].forEach(sc=>{
+    let d='';
+    labs.forEach((_,i)=>{const a=-Math.PI/2+(i/n)*Math.PI*2;const x=cx+Math.cos(a)*r*sc;const y=cy+Math.sin(a)*r*sc;d+=(i===0?`M${x},${y}`:`L${x},${y}`);});
+    d+='Z';
+    s.appendChild(svg('path',{d,fill:'none',stroke:'rgba(0,0,0,0.08)','stroke-width':'1'}));
   });
-  labs.forEach((_,i)=>{const a=-Math.PI/2+(i/n)*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);ctx.strokeStyle='rgba(0,0,0,0.07)';ctx.lineWidth=1;ctx.stroke();});
-  function poly(data,color,fill){
-    ctx.beginPath();
-    data.forEach((v,i)=>{const a=-Math.PI/2+(i/n)*Math.PI*2;const d=r*(v/100);const x=cx+Math.cos(a)*d;const y=cy+Math.sin(a)*d;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
-    ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+  // spokes
+  labs.forEach((_,i)=>{
+    const a=-Math.PI/2+(i/n)*Math.PI*2;
+    s.appendChild(svg('line',{x1:cx,y1:cy,x2:cx+Math.cos(a)*r,y2:cy+Math.sin(a)*r,
+      stroke:'rgba(0,0,0,0.08)','stroke-width':'1'}));
+  });
+  function polyPath(data){
+    let d='';
+    data.forEach((v,i)=>{const a=-Math.PI/2+(i/n)*Math.PI*2;const d2=r*(v/100);d+=(i===0?`M${cx+Math.cos(a)*d2},${cy+Math.sin(a)*d2}`:`L${cx+Math.cos(a)*d2},${cy+Math.sin(a)*d2}`);});
+    return d+'Z';
   }
-  poly(ent,R,'rgba(200,75,47,0.12)');
-  poly(mid,G,'rgba(26,107,92,0.12)');
+  s.appendChild(svg('path',{d:polyPath(ent),fill:'rgba(200,75,47,0.15)',stroke:R,'stroke-width':'2'}));
+  s.appendChild(svg('path',{d:polyPath(mid),fill:'rgba(26,107,92,0.15)',stroke:G,'stroke-width':'2'}));
+  // axis labels
   labs.forEach((l,i)=>{
     const a=-Math.PI/2+(i/n)*Math.PI*2;
-    ctx.fillStyle='#555';ctx.font='10px IBM Plex Mono,monospace';ctx.textAlign='center';
-    ctx.fillText(l,cx+Math.cos(a)*(r+16),cy+Math.sin(a)*(r+16)+4);
+    const x=cx+Math.cos(a)*(r+18),y=cy+Math.sin(a)*(r+18);
+    s.appendChild(svg('text',{x,y:y+4,'text-anchor':'middle',fill:'#555',
+      'font-size':'9','font-family':'IBM Plex Mono,monospace'},[l]));
   });
-  ctx.fillStyle=R;ctx.fillRect(W/2-75,H-12,14,3);ctx.fillStyle='#555';ctx.font='10px IBM Plex Mono,monospace';ctx.textAlign='left';ctx.fillText('Enterprise',W/2-57,H-7);
-  ctx.fillStyle=G;ctx.fillRect(W/2+25,H-12,14,3);ctx.fillStyle='#555';ctx.fillText('Mid-Market',W/2+43,H-7);
+  // legend
+  s.appendChild(svg('rect',{x:cx-75,y:H-14,width:14,height:3,fill:R}));
+  s.appendChild(svg('text',{x:cx-57,y:H-9,fill:'#555','font-size':'10','font-family':'IBM Plex Mono,monospace'},['Enterprise']));
+  s.appendChild(svg('rect',{x:cx+20,y:H-14,width:14,height:3,fill:G}));
+  s.appendChild(svg('text',{x:cx+38,y:H-9,fill:'#555','font-size':'10','font-family':'IBM Plex Mono,monospace'},['Mid-Market']));
 }
 
+// ── BUDGET VS ACTUALS ──
 function drawBudget(){
-  const ctx=resizeCanvas('budgetChart');
-  const W=ctx.canvas.width,H=ctx.canvas.height;
-  const pl=56,pr=12,pt=16,pb=36;
+  const W=360,H=240,pl=52,pr=12,pt=16,pb=36;
+  const s=mkSVG('budgetChart',W,H);
   const labs=['Q1','Q2','Q3','Q4'];
   const budget=[5800,6400,7100,7800],actuals=[5640,6720,7380,8140];
   const cW=W-pl-pr,cH=H-pt-pb,mx=9000;
-  const grpW=cW/labs.length,bW=grpW*0.28;
-  ctx.clearRect(0,0,W,H);
+  const grpW=cW/labs.length,bW=grpW*0.3;
+  // grid
   [0,3000,6000,9000].forEach(v=>{
     const y=pt+cH*(1-v/mx);
-    ctx.beginPath();ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=1;ctx.moveTo(pl,y);ctx.lineTo(pl+cW,y);ctx.stroke();
-    ctx.fillStyle='#aaa';ctx.font='9px IBM Plex Mono,monospace';ctx.textAlign='right';ctx.fillText('$'+(v/1000)+'K',pl-4,y+3);
+    s.appendChild(svg('line',{x1:pl,y1:y,x2:pl+cW,y2:y,stroke:'rgba(0,0,0,0.05)','stroke-width':'1'}));
+    s.appendChild(svg('text',{x:pl-4,y:y+4,'text-anchor':'end',fill:'#aaa',
+      'font-size':'9','font-family':'IBM Plex Mono,monospace'},[`$${v/1000}K`]));
   });
   labs.forEach((l,i)=>{
-    const cx=pl+grpW*i+grpW/2;
+    const bx=pl+grpW*i+grpW/2;
     const bh1=cH*(budget[i]/mx);
-    ctx.fillStyle='rgba(0,0,0,0.12)';ctx.beginPath();ctx.roundRect(cx-bW-2,pt+cH-bh1,bW,bh1,3);ctx.fill();
+    s.appendChild(svg('rect',{x:bx-bW-2,y:pt+cH-bh1,width:bW,height:bh1,
+      fill:'rgba(0,0,0,0.12)',rx:'3'}));
     const bh2=cH*(actuals[i]/mx);
-    ctx.fillStyle=actuals[i]>budget[i]?'rgba(200,75,47,0.8)':'rgba(26,107,92,0.8)';
-    ctx.beginPath();ctx.roundRect(cx+2,pt+cH-bh2,bW,bh2,3);ctx.fill();
-    ctx.fillStyle='#555';ctx.font='11px IBM Plex Mono,monospace';ctx.textAlign='center';ctx.fillText(l,cx,H-8);
+    const col=actuals[i]>budget[i]?'rgba(200,75,47,0.85)':'rgba(26,107,92,0.85)';
+    s.appendChild(svg('rect',{x:bx+2,y:pt+cH-bh2,width:bW,height:bh2,fill:col,rx:'3'}));
+    s.appendChild(svg('text',{x:bx,y:H-8,'text-anchor':'middle',fill:'#555',
+      'font-size':'11','font-family':'IBM Plex Mono,monospace'},[l]));
   });
-  ctx.fillStyle='rgba(0,0,0,0.2)';ctx.fillRect(pl,H-10,14,3);ctx.fillStyle='#555';ctx.font='10px IBM Plex Mono,monospace';ctx.textAlign='left';ctx.fillText('Budget',pl+18,H-6);
-  ctx.fillStyle='rgba(26,107,92,0.8)';ctx.fillRect(pl+72,H-10,14,3);ctx.fillStyle='#555';ctx.fillText('Actuals',pl+90,H-6);
+  // legend
+  s.appendChild(svg('rect',{x:pl,y:H-10,width:14,height:3,fill:'rgba(0,0,0,0.2)'}));
+  s.appendChild(svg('text',{x:pl+18,y:H-5,fill:'#555','font-size':'10','font-family':'IBM Plex Mono,monospace'},['Budget']));
+  s.appendChild(svg('rect',{x:pl+72,y:H-10,width:14,height:3,fill:'rgba(26,107,92,0.85)'}));
+  s.appendChild(svg('text',{x:pl+90,y:H-5,fill:'#555','font-size':'10','font-family':'IBM Plex Mono,monospace'},['Actuals']));
 }
 
 function drawAll(){drawMRR();drawDonut();drawPipeline();drawRadar();drawBudget();}
-window.addEventListener('load',()=>{setTimeout(drawAll,100);});
-window.addEventListener('resize',drawAll);
+document.addEventListener('DOMContentLoaded',drawAll);
+if(document.readyState==='complete'||document.readyState==='interactive'){drawAll();}
 
 const kd={all:{k1:'$24.8M',k2:'114%',k3:'1.8x',k4:'3.2%'},q1:{k1:'$5.4M',k2:'108%',k3:'1.6x',k4:'5.1%'},q2:{k1:'$6.2M',k2:'111%',k3:'1.7x',k4:'4.4%'},q3:{k1:'$6.8M',k2:'116%',k3:'1.9x',k4:'3.8%'},q4:{k1:'$7.1M',k2:'119%',k3:'2.1x',k4:'3.2%'}};
 function setFilter(k,btn){
